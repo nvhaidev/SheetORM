@@ -17,7 +17,7 @@ async function test() {
   try {
     const User = await db.createTable('Users', row);
     const user = User.create({
-      Password: '9999999999',
+      Password: '11111111111',
       Email: 'Test@gmail.com',
       Name: "Test"
     });
@@ -32,7 +32,7 @@ async function test() {
    { id: 2,
      Name: 'Test',
      Email: 'Test@gmail.com',
-     Password: 9999999999,
+     Password: 11111111111,
      createdAt: '12-29-2021 08:14:49',
      updatedAt: '12-29-2021 08:14:49'
     },
