@@ -9,7 +9,7 @@
 1UA1d9yVXqE-wq90EyRj78MqOgUWdqhLYSwJ3uuW1WRC66AXrYh_4flC3
 ```
 
-## Usage
+## Quick example
 ```js
 async function test() {
   const db = SheetORM.connection('xxxxxxxxxxxxxxxxxxxxxxxxx');
@@ -40,6 +40,154 @@ async function test() {
   destroy: [Function: destroy] }
 ```
 ![Table](https://i.imgur.com/kcSkPBg.png)
+
+```js
+async function test() {
+  const db = SheetORM.connection('1IPehZDF0yLdZNSSIkMOdlW6iXlVc6bYpwxRVUEwM6iM');
+  const row = ['Name', 'Email', 'Password'];
+  try {
+    const User = await db.createTable('Users', row);
+
+    const user = User.findByPk(2);
+    console.log(user)
+    user.result.Name = 'Hello word'
+    await user.save();
+    console.log(user)
+  } catch (e) {
+    console.log(e)
+  }
+}
+```
+```console
+{ result: 
+   { id: 2,
+     Name: 'Test',
+     Email: 'Test@gmail.com',
+     Password: 11111111111,
+     createdAt: '12-29-2021 08:14:49',
+     updatedAt: '12-29-2021 08:28:12'
+     },
+  save: [Function: save],
+  destroy: [Function: destroy] 
+}
+  { result: 
+   { id: 2,
+     Name: 'Hello word',
+     Email: 'Test@gmail.com',
+     Password: 11111111111,
+     createdAt: '12-29-2021 08:14:49',
+     updatedAt: '12-29-2021 08:34:36'
+     },
+  save: [Function: save],
+  destroy: [Function: destroy]
+  }
+```
+![Table](https://i.imgur.com/87JdbOe.png)
+
+### Create
+```
+const user = await User.create({
+  username: 'test',
+  password: '11111111'
+});
+console.log(user)
+ { result: 
+   { id: 2,
+     username: 'test',
+     password: 11111111111,
+     createdAt: '12-29-2021 08:14:49',
+     updatedAt: '12-29-2021 08:34:36'
+     },
+  save: [Function: save],
+  destroy: [Function: destroy]
+  }
+```
+### FindOne
+```
+const user = await User.findOne({
+ where:{
+     username: 'test',
+ }
+});
+console.log(user)
+ { result: 
+   { id: 2,
+     username: 'test',
+     password: 11111111111,
+     createdAt: '12-29-2021 08:14:49',
+     updatedAt: '12-29-2021 08:34:36'
+     },
+  save: [Function: save],
+  destroy: [Function: destroy]
+  }
+```
+### FindByPk
+```
+const user = await User.findByPk(2);
+console.log(user)
+ { result: 
+   { id: 2,
+     username: 'test',
+     password: 11111111111,
+     createdAt: '12-29-2021 08:14:49',
+     updatedAt: '12-29-2021 08:34:36'
+     },
+  save: [Function: save],
+  destroy: [Function: destroy]
+  }
+```
+### FindAll
+```
+const user = await User.findAll();
+console.log(user)
+ { result: 
+   { id: 2,
+     username: 'test',
+     password: 11111111111,
+     createdAt: '12-29-2021 08:14:49',
+     updatedAt: '12-29-2021 08:34:36'
+     },
+  save: [Function: save],
+  destroy: [Function: destroy]
+  }
+```
+```
+const user = await User.findAll({
+where:{
+   username: 'test'  
+},
+limit:1,
+offset:2
+});
+console.log(user)
+ { result: 
+   { id: 2,
+     username: 'test',
+     password: 11111111111,
+     createdAt: '12-29-2021 08:14:49',
+     updatedAt: '12-29-2021 08:34:36'
+     },
+  save: [Function: save],
+  destroy: [Function: destroy]
+  }
+```
+### FindAndCountAll
+```
+const user = await User.findAndCountAll();
+console.log(user)
+ {
+ conut:1, 
+ result: 
+   { id: 2,
+     username: 'test',
+     password: 11111111111,
+     createdAt: '12-29-2021 08:14:49',
+     updatedAt: '12-29-2021 08:34:36'
+     },
+  save: [Function: save],
+  destroy: [Function: destroy]
+  }
+```
 
 ## License
 The MIT License
