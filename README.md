@@ -85,7 +85,7 @@ async function test() {
 ![Table](https://i.imgur.com/87JdbOe.png)
 
 ### Create
-```
+```js
 const user = await User.create({
   username: 'test',
   password: '11111111'
@@ -103,7 +103,7 @@ console.log(user)
   }
 ```
 ### FindOne
-```
+```js
 const user = await User.findOne({
  where:{
      username: 'test',
@@ -122,7 +122,7 @@ console.log(user)
   }
 ```
 ### FindByPk
-```
+```js
 const user = await User.findByPk(2);
 console.log(user)
  { result: 
@@ -137,7 +137,7 @@ console.log(user)
   }
 ```
 ### FindAll
-```
+```js
 const user = await User.findAll();
 console.log(user)
  { result: 
@@ -151,7 +151,7 @@ console.log(user)
   destroy: [Function: destroy]
   }
 ```
-```
+```js
 const user = await User.findAll({
 where:{
    username: 'test'  
@@ -172,7 +172,7 @@ console.log(user)
   }
 ```
 ### FindAndCountAll
-```
+```js
 const user = await User.findAndCountAll();
 console.log(user)
  {
