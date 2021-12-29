@@ -83,7 +83,12 @@ async function test() {
   }
 ```
 ![Table](https://i.imgur.com/87JdbOe.png)
-
+### Create Table
+```js
+    const db = SheetORM.connection('xxxxxxxxxxxxxxxxxxxx');
+    const row = ['Name', 'Email', 'Password'];
+    const User = await db.createTable('Users', row);
+```
 ### Create
 ```js
 const user = await User.create({
