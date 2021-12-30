@@ -12,7 +12,7 @@
 ## Quick example
 ```js
 async function test() {
-  const db = SheetORM.connection('xxxxxxxxxxxxxxxxxxxxxxxxx');
+  const db = SheetORM.Connection.createConnection('xxxxxxxxxxxxxxx);
   const row = ['Name', 'Email', 'Password'];
   try {
     const User = await db.createTable('Users', row);
@@ -43,7 +43,7 @@ async function test() {
 
 ```js
 async function test() {
-  const db = SheetORM.connection('1IPehZDF0yLdZNSSIkMOdlW6iXlVc6bYpwxRVUEwM6iM');
+  const db = SheetORM.Connection.createConnection('xxxxxxxxxxxxxxx);
   const row = ['Name', 'Email', 'Password'];
   try {
     const User = await db.createTable('Users', row);
@@ -85,7 +85,7 @@ async function test() {
 ![Table](https://i.imgur.com/87JdbOe.png)
 ### Create Table
 ```js
-    const db = SheetORM.connection('xxxxxxxxxxxxxxxxxxxx');
+    const db = SheetORM.Connection.createConnection('xxxxxxxxxxxxxxx);
     const row = ['Name', 'Email', 'Password'];
     const User = await db.createTable('Users', row);
 ```
