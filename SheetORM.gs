@@ -1,12 +1,12 @@
-const SheetORM = (() => {
+var Connection = (() => {
 
-  const connection = (sheetId) => {
+  var createConnection = (sheetId) => {
     const ss = SpreadsheetApp.openById(sheetId);
 
     const timeZone = Session.getScriptTimeZone();
     const date = Utilities.formatDate(new Date(), timeZone, "MM-dd-yyyy HH:mm:ss");
 
-    const createTable = async (table, row) => {
+    var createTable = async (table, row) => {
 
       const colName = ['id'];
 
@@ -458,13 +458,17 @@ const SheetORM = (() => {
       await colName.forEach(result => {
         name.getRange(1, name.getLastColumn() + 1).setValue(result);
       });
-
+      const result = name.getDataRange().getValues()[0];
+      return {
+        'success':'true',
+        result
+      }
     }
     return {
       createTable
     }
   }
   return {
-    connection
+    createConnection
   }
 })()
