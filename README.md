@@ -193,6 +193,34 @@ console.log(user)
   destroy: [Function: destroy]
   }
 ```
+### Save
+```js
+async function test() {
+  const db = await Connection.createConnection(sheetId);
+  const user = await db.createTable('Users', ['Name', 'Email', 'Password'])
+  const data = await user.findByPk(6)
+  
+  Logger.log(data.result)
 
+  data.result.Name ='Xin chao'
+  data.save()
+  Logger.log(data.result)
+{id=6.0, Name=Xin chao, Email=Test4@gmail.com, Password=3999999996, createdAt=01-13-2022 22:10:48, updatedAt=01-13-2022 22:15:01}
+{updatedAt=01-13-2022 22:16:18, Email=Test4@gmail.com, id=6.0, Password=3999999996, Name=Xin chao1, createdAt=01-13-2022 22:10:48}
+}
+```
+### Destroy
+```js
+async function test() {
+  const db = await Connection.createConnection(sheetId);
+  const user = await db.createTable('Users', ['Name', 'Email', 'Password'])
+  const data = await user.findByPk(6)
+
+  Logger.log(data.result)
+
+  data.destroy()
+  {id=6.0, Name=Xin chao1, updatedAt=01-13-2022 22:16:18, Password=3999999996, Email=Test4@gmail.com, createdAt=01-13-2022 22:10:48}
+}
+```
 ## License
 The MIT License
