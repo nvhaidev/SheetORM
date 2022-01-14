@@ -27,8 +27,9 @@ var Connection = (() => {
 
         return {
           create(data) {
+            const idMax = name.getLastRow() + 1;
             const key = Object.keys(data);
-            let valueRow = { "id": row + 1 };
+            let valueRow = { "id": idMax };
 
             key.forEach(val => {
               valueRow = { ...valueRow, [val]: data[val] };
@@ -41,7 +42,7 @@ var Connection = (() => {
             valueRowKeys.map(val => {
               const indexColumn = columnNameTable[val];
               if (indexColumn !== undefined && indexColumn !== null) {
-                name.getRange(row + 1, indexColumn).setValue(valueRow[val]);
+                name.getRange(idMax, indexColumn).setValue(valueRow[val]);
               } else {
                 throw new Error('Column name does not exist ' + val);
               }
@@ -56,7 +57,6 @@ var Connection = (() => {
               }
 
             })
-
             return {
               result,
               save() {
@@ -79,10 +79,17 @@ var Connection = (() => {
           },
           findByPk(id) {
             const rows = name.getRange(Number(id), 1, 1, columnNameTableKeys.length).getValues();
+            const ids = Number(name.getRange(Number(id), 1).getValue())
+            if (ids === 0 && ids === 0.0) {
+              return {
+                result: 'undefined'
+              }
+            }
             let result = {}
             rowsName[0].forEach((val, i) => {
               if (val !== undefined) {
                 result = { ...result, [val]: rows[0][i] }
+
               }
             })
             return {
@@ -128,6 +135,11 @@ var Connection = (() => {
               return row[where] === options['where'][where]
             });
             const result = newresult[0];
+            if (result === undefined) {
+              return {
+                result: 'undefined'
+              }
+            }
             return {
               result,
               save() {
@@ -183,22 +195,30 @@ var Connection = (() => {
                     }
                   }
                 });
+
                 return {
                   result,
                   save() {
-                    const valueRowKeys = Object.keys(this.result);
-                    this.result['updatedAt'] = date;
-                    valueRowKeys.map(val => {
-                      const indexColumn = columnNameTable[val];
-                      if (indexColumn !== undefined && indexColumn !== null) {
-                        name.getRange(this.result['id'], indexColumn).setValue(this.result[val]);
-                      } else {
-                        throw new Error('Column name does not exist ' + val);
-                      }
-                    });
-                  },
-                  destroy() {
-                    name.deleteRow(this.result['id'])
+                    this.result.forEach((val, key) => {
+                      const resultData = this.result[key]
+                      const valueRowKeys = Object.keys(resultData);
+
+                      resultData['updatedAt'] = date;
+                      valueRowKeys.map(val => {
+                        const indexColumn = columnNameTable[val];
+                        if (indexColumn !== undefined && indexColumn !== null) {
+                          name.getRange(resultData['id'], indexColumn).setValue(resultData[val]);
+                        } else {
+                          throw new Error('Column name does not exist ' + val);
+                        }
+                      });
+                    })
+
+                  }, destroy() {
+                    this.result.forEach((val, key) => {
+                      name.deleteRow(this.result[key]['id'])
+                    })
+
                   }
                 };
               }
@@ -237,19 +257,26 @@ var Connection = (() => {
                 return {
                   result,
                   save() {
-                    const valueRowKeys = Object.keys(this.result);
-                    this.result['updatedAt'] = date;
-                    valueRowKeys.map(val => {
-                      const indexColumn = columnNameTable[val];
-                      if (indexColumn !== undefined && indexColumn !== null) {
-                        name.getRange(this.result['id'], indexColumn).setValue(this.result[val]);
-                      } else {
-                        throw new Error('Column name does not exist ' + val);
-                      }
-                    });
+                    this.result.forEach((val, key) => {
+                      const resultData = this.result[key]
+                      const valueRowKeys = Object.keys(resultData);
+
+                      resultData['updatedAt'] = date;
+                      valueRowKeys.map(val => {
+                        const indexColumn = columnNameTable[val];
+                        if (indexColumn !== undefined && indexColumn !== null) {
+                          name.getRange(resultData['id'], indexColumn).setValue(resultData[val]);
+                        } else {
+                          throw new Error('Column name does not exist ' + val);
+                        }
+                      });
+                    })
+
                   },
                   destroy() {
-                    name.deleteRow(this.result['id'])
+                    this.result.forEach((val, key) => {
+                      name.deleteRow(this.result[key]['id'])
+                    })
                   }
                 };
               }
@@ -273,22 +300,34 @@ var Connection = (() => {
                 const result = data.filter(row => {
                   return row[where] === options['where'][where]
                 });
+                if (result.length === 0) {
+                  return {
+                    result: 'undefined'
+                  }
+                }
                 return {
                   result,
                   save() {
-                    const valueRowKeys = Object.keys(this.result);
-                    this.result['updatedAt'] = date;
-                    valueRowKeys.map(val => {
-                      const indexColumn = columnNameTable[val];
-                      if (indexColumn !== undefined && indexColumn !== null) {
-                        name.getRange(this.result['id'], indexColumn).setValue(this.result[val]);
-                      } else {
-                        throw new Error('Column name does not exist ' + val);
-                      }
-                    });
+                    this.result.forEach((val, key) => {
+                      const resultData = this.result[key]
+                      const valueRowKeys = Object.keys(resultData);
+
+                      resultData['updatedAt'] = date;
+                      valueRowKeys.map(val => {
+                        const indexColumn = columnNameTable[val];
+                        if (indexColumn !== undefined && indexColumn !== null) {
+                          name.getRange(resultData['id'], indexColumn).setValue(resultData[val]);
+                        } else {
+                          throw new Error('Column name does not exist ' + val);
+                        }
+                      });
+                    })
+
                   },
                   destroy() {
-                    name.deleteRow(this.result['id'])
+                    this.result.forEach((val, key) => {
+                      name.deleteRow(this.result[key]['id'])
+                    })
                   }
                 };
               }
@@ -328,19 +367,26 @@ var Connection = (() => {
                 return {
                   result,
                   save() {
-                    const valueRowKeys = Object.keys(this.result);
-                    this.result['updatedAt'] = date;
-                    valueRowKeys.map(val => {
-                      const indexColumn = columnNameTable[val];
-                      if (indexColumn !== undefined && indexColumn !== null) {
-                        name.getRange(this.result['id'], indexColumn).setValue(this.result[val]);
-                      } else {
-                        throw new Error('Column name does not exist ' + val);
-                      }
-                    });
+                    this.result.forEach((val, key) => {
+                      const resultData = this.result[key]
+                      const valueRowKeys = Object.keys(resultData);
+
+                      resultData['updatedAt'] = date;
+                      valueRowKeys.map(val => {
+                        const indexColumn = columnNameTable[val];
+                        if (indexColumn !== undefined && indexColumn !== null) {
+                          name.getRange(resultData['id'], indexColumn).setValue(resultData[val]);
+                        } else {
+                          throw new Error('Column name does not exist ' + val);
+                        }
+                      });
+                    })
+
                   },
                   destroy() {
-                    name.deleteRow(this.result['id'])
+                    this.result.forEach((val, key) => {
+                      name.deleteRow(this.result[key]['id'])
+                    })
                   }
                 };
 
@@ -377,19 +423,26 @@ var Connection = (() => {
                 return {
                   result,
                   save() {
-                    const valueRowKeys = Object.keys(this.result);
-                    this.result['updatedAt'] = date;
-                    valueRowKeys.map(val => {
-                      const indexColumn = columnNameTable[val];
-                      if (indexColumn !== undefined && indexColumn !== null) {
-                        name.getRange(this.result['id'], indexColumn).setValue(this.result[val]);
-                      } else {
-                        throw new Error('Column name does not exist ' + val);
-                      }
-                    });
+                    this.result.forEach((val, key) => {
+                      const resultData = this.result[key]
+                      const valueRowKeys = Object.keys(resultData);
+
+                      resultData['updatedAt'] = date;
+                      valueRowKeys.map(val => {
+                        const indexColumn = columnNameTable[val];
+                        if (indexColumn !== undefined && indexColumn !== null) {
+                          name.getRange(resultData['id'], indexColumn).setValue(resultData[val]);
+                        } else {
+                          throw new Error('Column name does not exist ' + val);
+                        }
+                      });
+                    })
+
                   },
                   destroy() {
-                    name.deleteRow(this.result['id'])
+                    this.result.forEach((val, key) => {
+                      name.deleteRow(this.result[key]['id'])
+                    })
                   }
                 };
 
@@ -415,19 +468,26 @@ var Connection = (() => {
               return {
                 result,
                 save() {
-                  const valueRowKeys = Object.keys(this.result);
-                  this.result['updatedAt'] = date;
-                  valueRowKeys.map(val => {
-                    const indexColumn = columnNameTable[val];
-                    if (indexColumn !== undefined && indexColumn !== null) {
-                      name.getRange(this.result['id'], indexColumn).setValue(this.result[val]);
-                    } else {
-                      throw new Error('Column name does not exist ' + val);
-                    }
-                  });
+                  this.result.forEach((val, key) => {
+                    const resultData = this.result[key]
+                    const valueRowKeys = Object.keys(resultData);
+
+                    resultData['updatedAt'] = date;
+                    valueRowKeys.map(val => {
+                      const indexColumn = columnNameTable[val];
+                      if (indexColumn !== undefined && indexColumn !== null) {
+                        name.getRange(resultData['id'], indexColumn).setValue(resultData[val]);
+                      } else {
+                        throw new Error('Column name does not exist ' + val);
+                      }
+                    });
+                  })
+
                 },
                 destroy() {
-                  name.deleteRow(this.result['id'])
+                  this.result.forEach((val, key) => {
+                    name.deleteRow(this.result[key]['id'])
+                  })
                 }
               };
             }
@@ -460,7 +520,7 @@ var Connection = (() => {
       });
       const result = name.getDataRange().getValues()[0];
       return {
-        'success':'true',
+        'success': 'true',
         result
       }
     }
@@ -472,3 +532,7 @@ var Connection = (() => {
     createConnection
   }
 })()
+
+
+
+
